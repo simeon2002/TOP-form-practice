@@ -44,12 +44,16 @@ const validation = {
   validatePostcode(e) {
     /** @type {HTMLInputElement} */
     const field = e.target;
+    console.log(field);
+
     const country = document.getElementById("country").value;
     const regexBGBE = /^\d{4}$/;
     const regexFR = /^\d{5}$/;
     console.log(regexFR.test(field.value));
     console.log(country);
     let errorMsg;
+
+    field.setCustomValidity("");
 
     if (country === "BG" && !regexBGBE.test(field.value))
       field.setCustomValidity(
@@ -65,7 +69,7 @@ const validation = {
       field.setCustomValidity("Please select a country first.");
 
     if (field.validity.valid) this.removeError(field);
-    else this.showError(field);
+    else this.showError(field.validationMessage, field);
   },
 
   validatePassword(e) {
