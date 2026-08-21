@@ -71,12 +71,8 @@ const validation = {
   validatePassword(e) {
     /** @type {HTMLInputElement} */
     const field = e.target;
-    const password = field.value;
-    const regexSpecialSymbol = /[!@#$]/;
-    const regexUppercaseLetter = /[A-Z]/;
-    const regexNumber = /\d/;
-    const regexLowercaseLetter = /[a-z]/;
 
+    // basic password validation
     if (field.validity.valueMissing) {
       this.showError(field.validationMessage, field);
       return;
@@ -87,6 +83,19 @@ const validation = {
       return;
     }
 
+    const customErrorMsg = this.customPasswordValidation(field.value);
+
+    field.setCustomValidity(customErrorMsg);
+
+    if (field.validity.valid) this.removeError(field);
+    else this.showError(customErrorMsg, field);
+  },
+
+  customPasswordValidation(password) {
+    const regexSpecialSymbol = /[!@#$]/;
+    const regexUppercaseLetter = /[A-Z]/;
+    const regexNumber = /\d/;
+    const regexLowercaseLetter = /[a-z]/;
     let customErrorMsg = "";
 
     if (!regexSpecialSymbol.test(password)) {
@@ -111,8 +120,7 @@ const validation = {
         : "Your password should contain at least one lowercase letter";
     }
 
-    if (customErrorMsg) this.showError(customErrorMsg, field);
-    else this.removeError(field);
+    return customErrorMsg;
   },
 
   validatepassWordConfirmation(e) {
