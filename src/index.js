@@ -10,16 +10,19 @@ const validation = {
    * @param {HTMLInputElement} field email input field
    */
   validateEmail(e) {
+    /** @type {HTMLInputElement} */
     const field = e.target;
     if (field.type !== "email") return;
 
-    if (field.validity.typeMismatch && !field.value.includes("@")) {
-      this.showError(field.validationMessage, field);
+    field.setCustomValidity("");
+
+    if (field.validity.typeMismatch) {
     } else if (field.validity.patternMismatch) {
-      this.showError("Please use a '.com' domain at the end.", field);
-    } else {
-      this.removeError(field);
+      field.setCustomValidity("Please use a '.com' domain at the end.");
     }
+
+    if (field.validity.valid) this.removeError(field);
+    else this.showError(field.validationMessage, field);
   },
 
   /**
@@ -189,7 +192,7 @@ postcodeField.addEventListener("focus", (e) => {
   validation.validatePostcode.call(validation, e);
 });
 
-passwordField.addEventListener("change", (e) => {
+passwordField.addEventListener("blur", (e) => {
   validation.passwordTouched = true;
   validation.validatePassword.call(validation, e);
 });
