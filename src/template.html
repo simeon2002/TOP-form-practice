@@ -11,11 +11,14 @@
         <h1 class="form__title">Account Details</h1>
       </header>
       <div>
-        <label for="email" required>Email</label>
-        <input type="email" id="email" name="email" />
-        <div class="error" aria-live="polite"">
-          <p>Error present.....ddsfadfdsd fasddfsa dffsddssf</p>
-        </div>
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          required
+          pattern=".*@.*\.com$"
+        />
       </div>
       <div>
         <label for="country">Country</label>
@@ -28,15 +31,27 @@
       </div>
       <div>
         <label for="postcode">Postal Code</label>
-        <input type="tel" id="postcode" name="postcode" required/>
+        <input type="tel" id="postcode" name="postcode" required />
       </div>
       <div>
         <label for="passw">Password</label>
-        <input type="password" id="passw" name="passw" required minlength="12"/>
+        <input
+          type="password"
+          id="passw"
+          name="passw"
+          required
+          minlength="12"
+        />
       </div>
       <div>
         <label for="passw-confirm">Confirm Password</label>
-        <input type="password" id="passw-confirm" name="passw-confirm" required minlength="12"/>
+        <input
+          type="password"
+          id="passw-confirm"
+          name="passw-confirm"
+          required
+          minlength="12"
+        />
       </div>
       <div>
         <button type="submit">Create Account</button>
