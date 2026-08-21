@@ -1,4 +1,12 @@
+/* eslint-disable no-undef */
 import "./styles.css";
+
+const form = document.querySelector("form");
+const emailField = document.querySelector("#email");
+const countryField = document.querySelector("#country");
+const postcodeField = document.querySelector("#postcode");
+const passwordField = document.querySelector("#passw");
+const confirmPasswordfield = document.querySelector("#passw-confirm");
 
 const validation = {
   postcodeTouched: false,
@@ -6,12 +14,22 @@ const validation = {
   passwordTouched: false,
 
   /**
+   * Validate all fields at once
+   */
+  validateAll() {
+    this.validateEmail(emailField);
+    this.validateCountry(countryField);
+    this.validatePostcode(postcodeField);
+    this.validatePassword(passwordField);
+    this.validatepassWordConfirmation(confirmPasswordfield);
+  },
+
+  /**
    * Validates an email input field
    * @param {HTMLInputElement} field email input field
    */
-  validateEmail(e) {
+  validateEmail(field) {
     /** @type {HTMLInputElement} */
-    const field = e.target;
     if (field.type !== "email") return;
 
     field.setCustomValidity("");
@@ -29,9 +47,8 @@ const validation = {
    * Validate country input field
    * @param {Event} e event object
    */
-  validateCountry(e) {
+  validateCountry(selectField) {
     /** @type {HTMLInputElement} */
-    const selectField = e.target;
     if (selectField.validity.valueMissing)
       this.showError(selectField.validationMessage, selectField);
     else this.removeError(selectField);
@@ -41,9 +58,8 @@ const validation = {
    * Validate the post code
    * @param {Event} e Event object
    */
-  validatePostcode(e) {
+  validatePostcode(field) {
     /** @type {HTMLInputElement} */
-    const field = e.target;
     console.log(field);
 
     const country = document.getElementById("country").value;
@@ -51,7 +67,6 @@ const validation = {
     const regexFR = /^\d{5}$/;
     console.log(regexFR.test(field.value));
     console.log(country);
-    let errorMsg;
 
     field.setCustomValidity("");
 
@@ -72,9 +87,8 @@ const validation = {
     else this.showError(field.validationMessage, field);
   },
 
-  validatePassword(e) {
+  validatePassword(field) {
     /** @type {HTMLInputElement} */
-    const field = e.target;
 
     // basic password validation
     if (field.validity.valueMissing) {
@@ -127,9 +141,8 @@ const validation = {
     return customErrorMsg;
   },
 
-  validatepassWordConfirmation(e) {
+  validatepassWordConfirmation(confirmField) {
     const passwordField = document.getElementById("passw");
-    const confirmField = e.target;
     console.log(passwordField.validity.valid);
     confirmField.setCustomValidity("");
 
@@ -169,65 +182,77 @@ const validation = {
   },
 };
 
-const form = document.querySelector("form");
-const emailField = document.querySelector("#email");
-const countryField = document.querySelector("#country");
-const postcodeField = document.querySelector("#postcode");
-const passwordField = document.querySelector("#passw");
-const confirmPasswordfield = document.querySelector("#passw-confirm");
-
 // email validation
 emailField.addEventListener("input", (e) => {
   if (!validation.emailTouched) return;
   console.log("testing email input");
-  validation.validateEmail.call(validation, e);
+  validation.validateEmail.call(validation, e.target);
 });
 
 emailField.addEventListener("blur", (e) => {
   validation.emailTouched = true;
-  validation.validateEmail.call(validation, e);
+  validation.validateEmail.call(validation, e.target);
 });
 
-form.addEventListener("submit", (e) => e.preventDefault());
-
 //country validation
-countryField.addEventListener(
-  "input",
-  validation.validateCountry.bind(validation),
+countryField.addEventListener("input", (e) =>
+  validation.validateCountry.bind(validation)(e.target),
 );
 
 // postal code validation
 postcodeField.addEventListener("blur", (e) => {
   validation.postcodeTouched = true;
-  validation.validatePostcode.bind(validation)(e);
+  validation.validatePostcode.bind(validation)(e.target);
 });
 
 postcodeField.addEventListener("input", (e) => {
   if (!validation.postcodeTouched) return;
-  validation.validatePostcode.call(validation, e);
+  validation.validatePostcode.call(validation, e.target);
 });
 
 postcodeField.addEventListener("focus", (e) => {
   if (!validation.postcodeTouched) return;
-  validation.validatePostcode.call(validation, e);
+  validation.validatePostcode.call(validation, e.target);
 });
 
 passwordField.addEventListener("blur", (e) => {
   validation.passwordTouched = true;
-  validation.validatePassword.call(validation, e);
+  validation.validatePassword.call(validation, e.target);
 });
 
 passwordField.addEventListener("input", (e) => {
   if (!validation.passwordTouched) return;
-  validation.validatePassword.call(validation, e);
+  validation.validatePassword.call(validation, e.target);
 });
 
-confirmPasswordfield.addEventListener(
-  "input",
-  validation.validatepassWordConfirmation.bind(validation),
+confirmPasswordfield.addEventListener("input", (e) =>
+  validation.validatepassWordConfirmation.bind(validation)(e.target),
 );
 
-confirmPasswordfield.addEventListener(
-  "focus",
-  validation.validatepassWordConfirmation.bind(validation),
+confirmPasswordfield.addEventListener("focus", (e) =>
+  validation.validatepassWordConfirmation.bind(validation)(e.target),
 );
+
+form.addEventListener("submit", formHandler);
+
+function formHandler(e) {
+  e.preventDefault();
+
+  console.log(form.checkValidity());
+  if (!form.checkValidity()) {
+    validation.validateAll();
+    console.log("test html");
+  } else {
+    const successEl = document.createElement("p");
+    successEl.textContent = "let's gooooo, succesfully created an account!";
+    form.insertAdjacentElement("afterend", successEl);
+  }
+}
+
+if (import.meta.webpackHot) {
+  import.meta.webpackHot.accept();
+
+  import.meta.webpackHot.dispose(() => {
+    form.removeEventListener("submit", formHandler);
+  });
+}
