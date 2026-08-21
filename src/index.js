@@ -49,19 +49,23 @@ const validation = {
     const regexFR = /^\d{5}$/;
     console.log(regexFR.test(field.value));
     console.log(country);
+    let errorMsg;
 
     if (country === "BG" && !regexBGBE.test(field.value))
-      this.showError(
+      field.setCustomValidity(
         "A Bulgarian post code needs to consist of 4 digits",
-        field,
       );
     else if (country === "BE" && !regexBGBE.test(field.value))
-      this.showError("A Belgian post code needs to consist of 4 digits", field);
+      field.setCustomValidity(
+        "A Belgian post code needs to consist of 4 digits",
+      );
     else if (country === "FR" && !regexFR.test(field.value))
-      this.showError("A French postcode needs to consist of 5 digits", field);
+      field.setCustomValidity("A French postcode needs to consist of 5 digits");
     else if (country.length === 0)
-      this.showError("Please select a country first.", field);
-    else this.removeError(field);
+      field.setCustomValidity("Please select a country first.");
+
+    if (field.validity.valid) this.removeError(field);
+    else this.showError(field);
   },
 
   validatePassword(e) {
