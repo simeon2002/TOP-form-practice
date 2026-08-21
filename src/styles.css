@@ -9,15 +9,35 @@
 
   /*****  COLORS (primary, secondary, accents and greys) *****/
   --clr-white: #fff;
-  --clr-black: hsl(0, 0%, 0%);
-  --clr-grey: rgb(117, 117, 117);
-  --clr-green: green;
-  --clr-green-light: rgba(0, 128, 0, 0.772);
+  --clr-primary-800: #032303;
+  --clr-primary-700: #1b7e1b;
+  --clr-primary-600: #229822;
+  --clr-primary-500: #32cd32;
+  --clr-primary-400: #53d34f;
+  --clr-primary-300: #6cd867;
+  --clr-primary-200: #81de7c;
+  --clr-primary-100: hsl(116, 73%, 80%);
+  --clr-primary-800: #0d4e0d;
+  --clr-gray-900: hsl(120, 4%, 11%);
+  --clr-gray-700: hsl(120, 6%, 40%);
+  --clr-gray-600: hsl(120, 6%, 65%);
+  --clr-gray-500: hsl(120, 6%, 80%);
+  --clr-gray-400: hsl(120, 8%, 85%);
+  --clr-gray-300: hsl(120, 8%, 90%);
+  --clr-gray-200: hsl(120, 8%, 95%);
+  --clr-gray-150: hsl(0, 4%, 97%);
+  --clr-gray-100: hsl(0, 0%, 99%);
+  /* --clr-secondary: */
+  /* Add semantic colors later! */
+  --clr-red: red;
 
   /***** TYPOGRAPHY *****/
   /* font weights */
   --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semi-bold: 600;
   --fw-bold: 700;
+  --fw-extra-bold: 800;
 
   /* - Font sizes (px) */
   --fs-100: 1rem; /* 10px */
@@ -36,14 +56,25 @@
   --fs-1400: 8.6rem; /* 86px */
   --fs-1500: 9.8rem; /* 98px */
 
+  /* semantic font names */
+  --fs-caption: var(--fs-200);
+  --fs-text-prim: var(--fs-400);
+  --fs-icon-md: var(--fs-500);
+  --fs-icon-sm: var(--fs-300);
+  --fs-text-sec: var(--fs-300);
+  --fs-heading-prim: var(--fs-800);
+  --fs-heading-sec: var(--fs-600);
+  --fs-heading-tert: var(--fs-500);
+
   /* letter spacing */
   /* line heights */
 
   /***** WHITESPACE *****/
   /* spacing system */
-  --space-20: 0.2rem;
+  --space-25: 0.2rem;
   --space-50: 0.4rem;
   --space-100: 0.8rem;
+  --space-140: 1.2rem;
   --space-200: 1.6rem;
   --space-300: 2.4rem;
   --space-400: 3.2rem;
@@ -61,6 +92,89 @@
 /********************************************/
 /* SPECIFIC STYLES */
 /********************************************/
+body {
+  font-size: var(--fs-400);
+  line-height: 1.5;
+  display: grid;
+  place-items: center;
+  height: 100vh;
+}
+
+form {
+  background-color: var(--clr-gray-300);
+  padding: var(--space-600);
+  border-radius: 8px;
+  box-shadow: 0 1rem 3rem hsla(0, 0%, 0%, 0.126);
+  max-width: 40rem;
+}
+
+.form__title {
+  font-size: var(--fs-700);
+  margin-bottom: var(--space-200);
+}
+
+form label {
+  font-weight: var(--fw-bold);
+}
+
+form :is(input, textarea) {
+  display: block;
+  appearance: none;
+}
+
+form :is(input, select) {
+  border: none;
+  border-radius: 2px;
+  padding: var(--space-50) var(--space-100);
+  outline: none;
+}
+
+form :is(input, select):focus-visible {
+  outline: 2px solid black;
+}
+
+form :is(input, select, textarea):user-invalid {
+  border: 2px solid red;
+  outline: none;
+}
+
+form div {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-50);
+}
+
+form div:not(:last-child) {
+  margin-bottom: var(--space-200);
+}
+
+button {
+  border: none;
+  background: none;
+  background-color: var(--clr-primary-600);
+  color: var(--clr-white);
+  padding: var(--space-100) var(--space-140);
+  border-radius: 2px;
+  transition: background-color 0.3s;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: var(--clr-primary-800);
+}
+
+form div:has(#passw-confirm) {
+  margin-bottom: var(--space-400);
+}
+
+.error {
+  display: none;
+  background-color: red;
+  padding: var(--space-100) var(--space-200);
+  color: var(--clr-white);
+  font-weight: var(--fw-medium);
+  border-radius: 0px 0px 4px 4px;
+}
 
 /********************************************/
 /* REUSABLE COMPONENTS */
