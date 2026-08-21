@@ -126,13 +126,17 @@ const validation = {
   validatepassWordConfirmation(e) {
     const passwordField = document.getElementById("passw");
     const confirmField = e.target;
+    console.log(passwordField.validity.valid);
+    confirmField.setCustomValidity("");
 
-    if (passwordField.value !== confirmField.value) {
-      this.showError("Passwords don't match!", confirmField);
-      return;
+    if (!passwordField.validity.valid) {
+      confirmField.setCustomValidity("Please fill in the password first");
+    } else if (passwordField.value !== confirmField.value) {
+      confirmField.setCustomValidity("Passwords don't match!");
     }
 
-    this.removeError(confirmField);
+    if (confirmField.validity.valid) this.removeError(confirmField);
+    else this.showError(confirmField.validationMessage, confirmField);
   },
 
   /**
@@ -216,5 +220,10 @@ passwordField.addEventListener("input", (e) => {
 
 confirmPasswordfield.addEventListener(
   "input",
+  validation.validatepassWordConfirmation.bind(validation),
+);
+
+confirmPasswordfield.addEventListener(
+  "focus",
   validation.validatepassWordConfirmation.bind(validation),
 );
